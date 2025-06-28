@@ -4,6 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.TypeInfoResolverChain.Insert(0, WeatherForecastJsonContext.Default);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +40,7 @@ app.MapGet("/weatherforecast", () =>
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
