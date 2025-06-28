@@ -1,0 +1,40 @@
+services:
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - '80:80'    # HTTP and LetEncrypt verification
+      - '443:443'  # HTTPS
+      - '81:81'    # NGINX Proxy Manager (NPM)
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - min-proxy
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Required for Watchtower to interact with Docker daemon
+      - /home/hirad/.docker/config.json:/config.json # Mount config.json to read ghcr.io password/token
+    environment:
+      - WATCHTOWER_SCHEDULE=0 */5 * * * * # <--- Set to check every 5 minute
+      - WATCHTOWER_CLEANUP=true # Clean up old images after update
+
+  collectorservice: #
+    image: 'ghcr.io/hirre/collectorservice:latest' # Ensure this is the exact image you use
+    container_name: collectorservice
+    restart: unless-stopped
+    # No 'ports:' mapping needed here unless you want to access it directly
+    # from the host, bypassing NPM. NPM will access it internally via the network.
+    environment:
+      - ASPNETCORE_URLS=http://+:8080 #;https://+:8443
+    networks:
+      - min-proxy # CONNECT TO THE SAME NETWORK
+
+networks:
+  min-proxy: # name of proxy, from -->  docker network create min-proxy
+    external: true
