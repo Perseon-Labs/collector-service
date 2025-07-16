@@ -18,7 +18,7 @@ RUN dotnet build "./CollectorService.csproj" -c $BUILD_CONFIGURATION -o /app/bui
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CollectorService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true /p:PublishSingleFile=true /p:SelfContained=true /p:PublishTrimmed=true -r linux-arm64
+RUN dotnet publish "./CollectorService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true /p:PublishSingleFile=true /p:SelfContained=true -r linux-arm64
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
