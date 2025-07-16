@@ -2,9 +2,11 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master  # only when pushing *to* master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master  # only when PR targets master (source branch can be anything)
 
 jobs:
   build:
@@ -20,6 +22,24 @@ jobs:
 
       - name: Build the Docker image
         run: docker build --platform=linux/arm64/v8 . --file Dockerfile --tag ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
+        
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: .
+
+      - name: Load Docker image
+        run: docker load -i image.tar
 
       - name: Push Docker image to GHCR
         run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
