@@ -25,7 +25,7 @@ services:
       - WATCHTOWER_CLEANUP=true # Clean up old images after update
 
   collectorservice: #
-    image: 'ghcr.io/hirre/collectorservice:latest' # Ensure this is the exact image you use
+    image: 'ghcr.io/perseon-labs/collectorservice:latest' # Ensure this is the exact image you use
     container_name: collectorservice
     restart: unless-stopped
     # No 'ports:' mapping needed here unless you want to access it directly
