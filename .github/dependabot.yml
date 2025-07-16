@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Enable version updates for NuGet
+  - package-ecosystem: "nuget"
+    # Look for NuGet dependency info in the root directory
+    directory: "/"
+    # Check for updates daily
+    schedule:
+      interval: "daily"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    # Look for a Dockerfile in the root directory
+    directory: "/"
+    # Check for updates weekly
+    schedule:
+      interval: "weekly"
