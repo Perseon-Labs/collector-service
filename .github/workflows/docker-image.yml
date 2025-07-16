@@ -22,6 +22,15 @@ jobs:
 
       - name: Build the Docker image
         run: docker build --platform=linux/arm64/v8 . --file Dockerfile --tag ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
+
+      - name: Save Docker image
+        run: docker save ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest -o collectorservice.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: collectorservice
+          path: image.tar
         
   deploy:
     runs-on: ubuntu-latest
@@ -35,11 +44,11 @@ jobs:
       - name: Download image artifact
         uses: actions/download-artifact@v4
         with:
-          name: docker-image
+          name: collectorservice
           path: .
 
       - name: Load Docker image
-        run: docker load -i image.tar
+        run: docker load -i collectorservice.tar
 
       - name: Push Docker image to GHCR
         run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
