@@ -19,7 +19,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
+        run: docker build --platform=linux/arm64/v8 . --file Dockerfile --tag ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
 
       - name: Push Docker image to GHCR
         run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/collectorservice:latest
