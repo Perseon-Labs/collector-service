@@ -6,7 +6,6 @@
         private readonly string? _errorMessage; // Just a string for the error
 
         public bool IsSuccess { get; }
-        public bool IsFailure => !IsSuccess;
 
         // Access the value if successful
         public T Value => IsSuccess
@@ -14,9 +13,7 @@
             : throw new InvalidOperationException("Cannot access Value when IsSuccess is false. Check IsFailure first.");
 
         // Access the error message if failed
-        public string ErrorMessage => IsFailure
-            ? _errorMessage! // Ensure it's not null when IsFailure is true
-            : throw new InvalidOperationException("Cannot access ErrorMessage when IsFailure is false. Check IsSuccess first.");
+        public string? ErrorMessage => _errorMessage;
 
         // Private constructor for a successful result
         private Result(T value)
