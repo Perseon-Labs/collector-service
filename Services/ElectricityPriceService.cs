@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace CollectorService.Services
 {
+    [McpServerToolType]
     public class ElectricityPriceService(IHttpClientFactory httpClientFactory) : IElectricityPriceService
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;

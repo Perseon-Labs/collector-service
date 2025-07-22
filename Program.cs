@@ -24,13 +24,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapMcp("/api/mcp");
+
 app.MapGet("/api/electricityprices", async (IElectricityPriceService electricityPriceService) =>
 {
     var res = await electricityPriceService.GetElectricityPricesAsync();
 
     if (!res.IsSuccess)
     {
-        return Results.BadRequest(res.ErrorMessage);
+        return Results.BadRequest(res?.ErrorMessage);
     }
 
     return Results.Ok(res.Value);
