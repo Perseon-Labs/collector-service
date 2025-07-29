@@ -13,6 +13,7 @@ builder.Services
 builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
 
 builder.Services.AddHttpClient();
+builder.Services.AddHybridCache();
 
 var app = builder.Build();
 
