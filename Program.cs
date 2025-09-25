@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapMcp("/api/mcp");
+app.MapControllers();
 
 app.MapGet("/api/electricityprices", async (IElectricityPriceService electricityPriceService) =>
 {

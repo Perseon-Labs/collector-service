@@ -9,12 +9,12 @@ namespace CollectorService.Services
 {
     public class MBusGatewayBackgroundService : BackgroundService
     {
-        private readonly IMBusGatewayService _gatewayService;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<MBusGatewayBackgroundService> _logger;
 
-        public MBusGatewayBackgroundService(IMBusGatewayService gatewayService, ILogger<MBusGatewayBackgroundService> logger)
+        public MBusGatewayBackgroundService(IServiceScopeFactory scopeFactory, ILogger<MBusGatewayBackgroundService> logger)
         {
-            _gatewayService = gatewayService;
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
@@ -24,7 +24,9 @@ namespace CollectorService.Services
             {
                 try
                 {
-                    var results = await _gatewayService.ReadAllMeterValuesAsync();
+                    using var scope = _scopeFactory.CreateScope();
+                    var gateway = scope.ServiceProvider.GetRequiredService<IMBusGatewayService>();
+                    var results = await gateway.ReadAllMeterValuesAsync();
                     foreach (var result in results)
                     {
                         if (result.Success)
