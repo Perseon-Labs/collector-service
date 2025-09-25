@@ -11,6 +11,9 @@ builder.Services
     .WithToolsFromAssembly();
 
 builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
+builder.Services.AddScoped<IMBusGatewayService, MBusGatewayService>();
+builder.Services.AddHostedService<MBusGatewayBackgroundService>();
+builder.Services.AddControllers();
 
 builder.Services.AddHttpClient();
 builder.Services.AddHybridCache();
