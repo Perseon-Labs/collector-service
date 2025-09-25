@@ -17,18 +17,18 @@ namespace CollectorService.Controllers
         }
 
         [HttpGet("read/{deviceId}")]
-        public async Task<ActionResult<MeterValueResult>> ReadMeterValue(string deviceId)
+        public async Task<ActionResult<MeterReadingResult>> ReadMeter(string deviceId, CancellationToken ct)
         {
-            var result = await _gatewayService.ReadMeterValueAsync(deviceId);
+            var result = await _gatewayService.ReadMeterAsync(deviceId, ct);
             if (!result.Success)
-                return BadRequest(result.ErrorMessage);
+                return BadRequest(result);
             return Ok(result);
         }
 
         [HttpGet("read-all")]
-        public async Task<ActionResult<IEnumerable<MeterValueResult>>> ReadAllMeterValues()
+        public async Task<ActionResult<IEnumerable<MeterReadingResult>>> ReadAllMeters(CancellationToken ct)
         {
-            var results = await _gatewayService.ReadAllMeterValuesAsync();
+            var results = await _gatewayService.ReadAllMetersAsync(ct);
             return Ok(results);
         }
     }

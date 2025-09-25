@@ -26,13 +26,17 @@ namespace CollectorService.Services
                 {
                     using var scope = _scopeFactory.CreateScope();
                     var gateway = scope.ServiceProvider.GetRequiredService<IMBusGatewayService>();
-                    var results = await gateway.ReadAllMeterValuesAsync();
+                    var results = await gateway.ReadAllMetersAsync(stoppingToken);
                     foreach (var result in results)
                     {
                         if (result.Success)
-                            _logger.LogInformation($"Device {result.DeviceId}: {result.Value} {result.Unit}");
+                        {
+                            _logger.LogInformation("Device {DeviceId} records={Count}", result.DeviceId, result.Records.Count);
+                        }
                         else
-                            _logger.LogWarning($"Failed to read {result.DeviceId}: {result.ErrorMessage}");
+                        {
+                            _logger.LogWarning("Failed to read {DeviceId}: {Error}", result.DeviceId, result.ErrorMessage);
+                        }
                     }
                 }
                 catch (Exception ex)

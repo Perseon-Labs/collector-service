@@ -14,6 +14,7 @@ builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
 builder.Services.AddScoped<IMBusGatewayService, MBusGatewayService>();
 builder.Services.AddHostedService<MBusGatewayBackgroundService>();
 builder.Services.AddControllers();
+builder.Services.Configure<CollectorService.MBus.Configuration.MBusOptions>(builder.Configuration.GetSection("MBus"));
 
 builder.Services.AddHttpClient();
 builder.Services.AddHybridCache();
