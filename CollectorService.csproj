@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.2" />
+    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.4" />
     <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.3.0-preview.2" />
   </ItemGroup>
 
